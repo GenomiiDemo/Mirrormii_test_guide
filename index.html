@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Beta App Installation Guide — TestFlight & Firebase</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SCC4Z5RX2N"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SCC4Z5RX2N');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -621,7 +629,52 @@ function applyLang(lang) {
 }
 
 document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', () => applyLang(btn.getAttribute('data-lang')));
+  btn.addEventListener('click', () => {
+    const lang = btn.getAttribute('data-lang');
+    gtag('event', 'language_switch', {
+      event_category: 'UI',
+      event_label: lang,
+      language: lang
+    });
+    applyLang(lang);
+  });
+});
+
+// Track iOS pill (hero anchor link)
+document.querySelector('a.pill-ios').addEventListener('click', () => {
+  gtag('event', 'button_click', {
+    event_category: 'Navigation',
+    event_label: 'Hero — iOS TestFlight pill',
+    platform: 'iOS'
+  });
+});
+
+// Track Android pill (hero anchor link)
+document.querySelector('a.pill-android').addEventListener('click', () => {
+  gtag('event', 'button_click', {
+    event_category: 'Navigation',
+    event_label: 'Hero — Android Firebase pill',
+    platform: 'Android'
+  });
+});
+
+// Track CTA buttons (Join Beta)
+document.querySelector('a.cta-btn-ios').addEventListener('click', () => {
+  gtag('event', 'cta_click', {
+    event_category: 'Conversion',
+    event_label: 'Join Beta — TestFlight',
+    platform: 'iOS',
+    destination_url: 'https://testflight.apple.com/join/sptQRk4y'
+  });
+});
+
+document.querySelector('a.cta-btn-android').addEventListener('click', () => {
+  gtag('event', 'cta_click', {
+    event_category: 'Conversion',
+    event_label: 'Join Beta — Firebase',
+    platform: 'Android',
+    destination_url: 'https://appdistribution.firebase.dev/i/dbccd34ebae26c5a'
+  });
 });
 
 applyLang('en');
